@@ -1,12 +1,13 @@
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
 import { getFilteredEvents } from "./../../helpers/api-util";
 import EventList from "./../../components/events/event-list";
 import ResultsTitle from "./../../components/events/results-title";
 import Button from "../../components/ui/button";
 import ErrorAlert from "./../../components/ui/error-alert";
+import Head from "next/head";
 
 const FilteredEventsPage = (props) => {
-  const router = useRouter();
+  // const router = useRouter();
   // const filteredData = router.query.slug;
 
   // if (!filteredData) {
@@ -19,9 +20,20 @@ const FilteredEventsPage = (props) => {
   // const numYear = +filteredYear;
   // const numMonth = +filteredMonth;
 
+  const pageHeadeData = (
+    <Head>
+      <title>Filtered Events</title>
+      <meta
+        name="description"
+        content={`All events for ${props.date.month}/${props.date.year}`}
+      />
+    </Head>
+  );
+
   if (props.hasError) {
     return (
       <>
+        {pageHeadeData}
         <ErrorAlert>
           <p>Invalid filter. Please adjust your values</p>
         </ErrorAlert>
@@ -37,6 +49,7 @@ const FilteredEventsPage = (props) => {
   if (!filteredEvents || filteredEvents.length === 0) {
     return (
       <>
+        {pageHeadeData}
         <ErrorAlert>
           <p>No events found for the chosen filter</p>
         </ErrorAlert>
@@ -51,6 +64,7 @@ const FilteredEventsPage = (props) => {
 
   return (
     <>
+      {pageHeadeData}
       <ResultsTitle date={date} />
       <EventList items={filteredEvents} />
     </>
